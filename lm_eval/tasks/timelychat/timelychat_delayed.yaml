@@ -1,0 +1,4 @@
+task: timelychat_delayed
+dataset_name: delayed
+include: _default_template_yaml
+doc_to_text: !function utils.doc_to_text_natural_prompting
