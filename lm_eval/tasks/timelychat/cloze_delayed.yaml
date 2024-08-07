@@ -1,0 +1,3 @@
+task: timelychat_cloze_delayed
+dataset_name: delayed
+include: cloze_test.yaml

@@ -1,0 +1,3 @@
+task: timelychat_cloze_instantaneous
+dataset_name: instantaneous
+include: cloze_test.yaml
