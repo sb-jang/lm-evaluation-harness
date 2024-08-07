@@ -56,6 +56,7 @@ To install the `lm-eval` package from the github repository, run:
 git clone https://github.com/EleutherAI/lm-evaluation-harness
 cd lm-evaluation-harness
 pip install -e .
+pip install sentencepiece protobuf torchmetrics
 ```
 
 We also provide a number of optional dependencies for extended functionality. A detailed table is available at the end of this document.
