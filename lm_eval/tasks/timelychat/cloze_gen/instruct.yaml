@@ -1,6 +1,8 @@
 task: timelychat_cloze_gen_instruct
 include: ../cloze_generate_until_template_yaml
-doc_to_text: !function utils.doc_to_text_instruct
+process_docs: !function utils.process_docs_instruct
+doc_to_text: "{{query}}"
+doc_to_target: "{{gold}}"
 generation_kwargs:
   until:
     - "\n\n"

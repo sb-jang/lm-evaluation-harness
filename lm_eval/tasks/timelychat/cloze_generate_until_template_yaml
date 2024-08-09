@@ -7,7 +7,6 @@ validation_split: null
 test_split: eval
 fewshot_split: valid
 fewshot_delimiter: "\n\n"
-doc_to_target: "1"
 metric_list:
   - metric: exact_match
     aggregation: mean
@@ -16,6 +15,8 @@ filter_list:
   - name: remove_whitespace
     filter:
       - function: remove_whitespace
+      - function: regex
+        regex_pattern: ^(\d+)\.?[^0-9]*
       - function: take_first
 description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to choose the next utterance based on the dialogue context and the time elapsed. Write a single number (1 or 2) as an answer.\n\n"
 metadata:
