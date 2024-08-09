@@ -1,0 +1,11 @@
+task: timelychat_cloze_gen_instruct
+include: ../cloze_generate_until_template_yaml
+doc_to_text: !function utils.doc_to_text_instruct
+generation_kwargs:
+  until:
+    - "\n\n"
+    - "\n"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0

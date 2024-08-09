@@ -1,9 +1,18 @@
+group: timelychat_cloze_mc
 dataset_path: seongbo-research/timelychat
+output_type: multiple_choice
+dataset_name: null
 training_split: null
 validation_split: null
 test_split: eval
 fewshot_split: valid
 fewshot_delimiter: "\n\n"
+doc_to_target: 0
+doc_to_choice: "{{[timely_response, untimely_response]}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
 description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to generate the next utterance based on the dialogue context and the time elapsed.\n\n"
 metadata:
   version: 1.0

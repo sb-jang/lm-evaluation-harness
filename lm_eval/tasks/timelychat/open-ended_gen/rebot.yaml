@@ -1,0 +1,12 @@
+include: ../open-ended_generate_until_template_yaml
+task: timelychat_open-ended_gen_rebot
+doc_to_text: !function utils.doc_to_text_rebot
+generation_kwargs:
+  until:
+    - "\n\n"
+    - "\n"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0
+  bad_words_ids: [[10975, 9309, 742]]

@@ -1,6 +1,12 @@
-task: timelychat_generation
+group: timelychat_open-ended_gen
+dataset_path: seongbo-research/timelychat
 output_type: generate_until
 dataset_name: null
+training_split: null
+validation_split: null
+test_split: eval
+fewshot_split: valid
+fewshot_delimiter: "\n\n"
 doc_to_target: "{{timely_response}}"
 process_results: !function metrics.process_results_gen
 metric_list:
@@ -67,13 +73,5 @@ metric_list:
   - metric: meteor_acc
     aggregation: mean
     higher_is_better: true
-generation_kwargs:
-  until:
-    - "\n\n"
-    - "\n"
-    - "</s>"
-    - "<|im_end|>"
-  do_sample: false
-  temperature: 0.0
-include: _default_template_yaml
-doc_to_text: !function prompts.doc_to_text_instruction
+metadata:
+  version: 1.0
