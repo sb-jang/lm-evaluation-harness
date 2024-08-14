@@ -73,5 +73,6 @@ metric_list:
   - metric: meteor_acc
     aggregation: mean
     higher_is_better: true
+description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to generate the next utterance based on the dialogue context and the time elapsed.\n\n"
 metadata:
   version: 1.0
