@@ -1,0 +1,13 @@
+task: time_interval_gen_instruct_w_response
+include: ../cloze_generate_until_template_yaml
+process_docs: !function utils.process_docs_instruct_with_gold_response
+doc_to_text: "{{query}}"
+doc_to_target: "{{gold}}"
+generation_kwargs:
+  until:
+    - "\n\n"
+    - "\n"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0

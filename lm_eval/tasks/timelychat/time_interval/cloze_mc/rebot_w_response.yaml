@@ -1,0 +1,4 @@
+task: time_interval_mc_rebot_w_response
+include: ../cloze_multiple_choice_template_yaml
+process_docs: !function utils.process_docs_rebot_with_gold_response
+target_delimiter: ""

@@ -1,0 +1,23 @@
+group: time_interval_cloze_gen
+dataset_path: seongbo-research/interval-prediction
+output_type: generate_until
+dataset_name: null
+training_split: null
+validation_split: null
+test_split: eval
+fewshot_split: eval
+fewshot_delimiter: "\n\n"
+doc_to_text: "{{query}}"
+doc_to_target: "{{gold}}"
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+filter_list:
+  - name: remove_whitespace
+    filter:
+      - function: remove_whitespace
+      - function: take_first
+description: "You are given a conversation between two speakers. Your task is to predict the time interval until the next utterance based on the dialogue context. Write a single letter (A, B, C or D) as an answer.\n\n"
+metadata:
+  version: 1.0

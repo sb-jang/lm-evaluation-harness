@@ -1,0 +1,19 @@
+group: time_interval_cloze_mc
+dataset_path: seongbo-research/interval-prediction
+output_type: multiple_choice
+dataset_name: null
+training_split: null
+validation_split: null
+test_split: eval
+fewshot_split: eval
+fewshot_delimiter: "\n\n"
+doc_to_target: 0
+doc_to_text: "{{query}}"
+doc_to_choice: "{{choices}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+description: "You are given a conversation between two speakers. Your task is to predict the time interval until the next utterance based on the dialogue context.\n\n"
+metadata:
+  version: 1.0
