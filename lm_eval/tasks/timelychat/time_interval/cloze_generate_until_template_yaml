@@ -18,6 +18,12 @@ filter_list:
     filter:
       - function: remove_whitespace
       - function: take_first
+  - filter:
+    - function: regex
+      group_select: 0
+      regex_pattern: ^\(?([A-Z])[\.\)]\s*
+    - function: take_first
+    name: flexible-extract
 description: "You are given a conversation between two speakers. Your task is to predict the time interval until the next utterance based on the dialogue context. Write a single letter (A, B, C or D) as an answer.\n\n"
 metadata:
   version: 1.0
