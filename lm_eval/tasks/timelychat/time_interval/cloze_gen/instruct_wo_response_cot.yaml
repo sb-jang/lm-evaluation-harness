@@ -1,0 +1,21 @@
+task: time_interval_gen_instruct_wo_response_cot
+include: ../cloze_generate_until_template_yaml
+process_docs: !function utils.process_docs_instruct_without_gold_response_cot
+doc_to_text: "{{query}}"
+doc_to_target: "{{gold}}"
+generation_kwargs:
+  until:
+    - "Q:"
+    - "Question:"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0
+filter_list:
+  - name: strict-match
+    filter:
+      - function: regex
+        regex_pattern: '((?<=The answer is )([A-Z])|(?<=answer is )([A-Z])|(?<=The answer: )([A-Z])|(?<=The final answe
+r: )([A-Z])|(?<=answer is: )([A-Z]))'
+      - function: take_first
+description: "You are given a conversation between two speakers. Your task is to predict the time interval until the next utterance based on the dialogue context. Your final answer should be a single letter (A, B, C or D) followed by 'The answer is '.\n\n"
