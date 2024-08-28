@@ -1,0 +1,18 @@
+include: ../open-ended_generate_until_template_yaml
+task: timelychat_open-ended_gen_instruct_cot
+doc_to_text: !function utils.doc_to_text_instruct_cot
+generation_kwargs:
+  until:
+    - "Q:"
+    - "Question:"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0
+filter_list:
+  - name: strict-match
+    filter:
+      - function: regex
+        regex_pattern: '(?:The (?:final )?answer:)\s*(.+?)(?=\s*#|\n[a-zA-Z0-9]|$)'
+      - function: take_first
+description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to generate the next utterance based on the dialogue context and the time elapsed. Your response after step-by-step reasoning should be followed by 'The final answer: '.\n\n"

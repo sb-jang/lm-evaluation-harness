@@ -16,6 +16,20 @@ def doc_to_text_instruct(doc: Dict[str, Union[str, List[str]]]) -> str:
     return query
 
 
+def doc_to_text_instruct_cot(doc: Dict[str, Union[str, List[str]]]) -> str:
+    context = "\n".join([f"{speaker}: {utt}" for speaker, utt in zip(doc["speaker_list"], doc["context"])])
+    query = (
+        "### Dialogue context ###\n"
+        f"{context}\n\n"
+        "### Time elapsed ###\n"
+        f"{doc['time_elapsed']}\n\n"
+        "### Next response ###\n"
+        "Let's think step by step."
+    )
+
+    return query
+
+
 def doc_to_text_rebot(doc: Dict[str, Union[str, List[str]]]) -> str:
     """
     The dialogue format used in ReBot (https://arxiv.org/pdf/2310.13420).

@@ -1,0 +1,27 @@
+task: timelychat_cloze_gen_instruct_cot
+include: ../cloze_generate_until_template_yaml
+process_docs: !function utils.process_docs_instruct_cot
+generation_kwargs:
+  until:
+    - "Q:"
+    - "Question:"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0
+filter_list:
+  - name: strict-match
+    filter:
+      - function: regex
+        regex_pattern: '((?<=The answer is )(\([A-Z]\)|[A-Z])|(?<=answer is )(\([A-Z]\)|[A-Z])|(?<=The answer: )(\([A-Z]\)|[A-Z])|(?<=The final answe
+r: )(\([A-Z]\)|[A-Z])|(?<=answer is: )(\([A-Z]\)|[A-Z]))'
+      - function: take_first
+  - name: flexible-extract
+    filter:
+      - function: multi_choice_regex
+        group_select: -1
+        ignore_case: true
+        ignore_punctuation: true
+        regex_pattern: (\\([A-Z]\\))
+      - function: take_first
+description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to choose the next utterance based on the dialogue context and the time elapsed. Your answer should be either (A) or (B) followed by 'The answer is '.\n\n"
