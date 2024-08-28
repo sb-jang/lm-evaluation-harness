@@ -1,0 +1,16 @@
+include: ../open-ended_generate_until_template_yaml
+task: timelychat_open-ended_gen_rebot_summ
+doc_to_text: !function utils.doc_to_text_rebot_summ
+generation_kwargs:
+  until:
+    - "\n\n"
+    - "\n"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0
+  bad_words_ids: [[10975, 9309, 742]]
+dataset_path: seongbo-research/timelychat-summ
+dataset_name: rebot
+fewshot_split: eval
+description: "You are given a dialogue and its summary between two speakers, the last utterance and the time elapsed after it. Your task is to generate the next utterance based on the dialogue context and the time elapsed.\n\n"

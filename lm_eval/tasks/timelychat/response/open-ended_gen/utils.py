@@ -27,6 +27,18 @@ def doc_to_text_rebot(doc: Dict[str, Union[str, List[str]]]) -> str:
     return query
 
 
+def doc_to_text_rebot_summ(doc: Dict[str, Union[str, List[str]]]) -> str:
+    """
+    Summary-appended prompt for ReBot evaluation.
+    """
+    # query = f"{doc['summary']} <{doc['speaker_list'][-1]}> {doc['context'][-1]}"
+    query = " ".join([f"<{speaker}> {utt}" for speaker, utt in zip(doc["speaker_list"], doc["context"])])
+    query += f" <summary> {doc['summary']}"
+    query += f" <{doc['time_elapsed'].capitalize()} after> <{doc['target_speaker']}>"
+
+    return query
+
+
 def doc_to_text_msc(doc: Dict[str, Union[str, List[str]]]) -> str:
     """
     The dialogue format used in MSC (https://aclanthology.org/2022.acl-long.356/).

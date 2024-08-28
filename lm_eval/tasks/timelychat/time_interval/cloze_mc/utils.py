@@ -58,11 +58,46 @@ def process_docs_rebot_without_gold_response(dataset: datasets.Dataset):
     return dataset.map(_helper)
 
 
+def process_docs_rebot_summ_without_gold_response(dataset: datasets.Dataset):
+    """
+    Summary-appended prompt for ReBot evaluation.
+    """
+    def _helper(doc):
+        doc["choices"] = [doc["time_elapsed"].lower(), *list(map(lambda x: x.lower(), doc["negative_answers"]))]
+
+        query = " ".join([f"<{speaker}> {utt}" for speaker, utt in zip(doc["speaker_list"], doc["context"])])
+        query += f" <summary> {doc['summary']}"
+        query += " <"
+        # NOTE: `target_delimiter` must be set to "" in yaml file
+        doc["choices"] = [c + " after>" for c in doc["choices"]]
+        doc["query"] = query
+
+        return doc
+
+    return dataset.map(_helper)
+
+
 def process_docs_rebot_with_gold_response(dataset: datasets.Dataset):
     def _helper(doc):
         doc["choices"] = [doc["time_elapsed"].lower(), *list(map(lambda x: x.lower(), doc["negative_answers"]))]
 
         query = " ".join([f"<{speaker}> {utt}" for speaker, utt in zip(doc["speaker_list"], doc["context"])])
+        query += " <"
+        # NOTE: `target_delimiter` must be set to "" in yaml file
+        doc["choices"] = [c + f" after> <{doc['target_speaker']}> {doc['timely_response']}" for c in doc["choices"]]
+        doc["query"] = query
+
+        return doc
+
+    return dataset.map(_helper)
+
+
+def process_docs_rebot_summ_with_gold_response(dataset: datasets.Dataset):
+    def _helper(doc):
+        doc["choices"] = [doc["time_elapsed"].lower(), *list(map(lambda x: x.lower(), doc["negative_answers"]))]
+
+        query = " ".join([f"<{speaker}> {utt}" for speaker, utt in zip(doc["speaker_list"], doc["context"])])
+        query += f" <summary> {doc['summary']}"
         query += " <"
         # NOTE: `target_delimiter` must be set to "" in yaml file
         doc["choices"] = [c + f" after> <{doc['target_speaker']}> {doc['timely_response']}" for c in doc["choices"]]
