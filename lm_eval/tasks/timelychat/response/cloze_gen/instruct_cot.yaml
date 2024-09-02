@@ -13,15 +13,6 @@ filter_list:
   - name: strict-match
     filter:
       - function: regex
-        regex_pattern: '((?<=The answer is )(\([A-Z]\)|[A-Z])|(?<=answer is )(\([A-Z]\)|[A-Z])|(?<=The answer: )(\([A-Z]\)|[A-Z])|(?<=The final answe
-r: )(\([A-Z]\)|[A-Z])|(?<=answer is: )(\([A-Z]\)|[A-Z]))'
+        regex_pattern: '((?<=Therefore, the answer is )(\([A-B]\)|[A-B])|(?<=answer is )(\([A-B]\)|[A-B])|(?<=answer is: )(\([A-B]\)|[A-B]))'
       - function: take_first
-  - name: flexible-extract
-    filter:
-      - function: multi_choice_regex
-        group_select: -1
-        ignore_case: true
-        ignore_punctuation: true
-        regex_pattern: (\\([A-Z]\\))
-      - function: take_first
-description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to choose the next utterance based on the dialogue context and the time elapsed. Your answer should be either (A) or (B) followed by 'The answer is '.\n\n"
+description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to choose the next utterance based on the dialogue context and the time elapsed. Your final answer should start with 'Therefore, the answer is ' followed by either (A) or (B).\n\n### Dialogue context ###\nA: I finally got home. What a day!\nB: It's eleven p.m. and you just got back home? It must be very tough day today.\nA: Whooa Imma take a shower. I'm too tired.\nB: Wash out all your fatigue with it.\n\n### Time elapsed ###\n20 minutes\n\n### Next response ###\n(A) A: I feel much better now! You didn't go to bed?\n(B) A: How nice of you :) Give me a moment. brb\n\nAnswer: Let's think step by step. 20 minutes have passed since A mentioned going to take a shower. Option (A) suggests that A has finished taking a shower and feels refreshed. Option (B) suggests that A is still in the process of doing something. Therefore, the answer is (A).\n\n"

@@ -4,7 +4,7 @@ doc_to_text: !function utils.doc_to_text_instruct_cot
 generation_kwargs:
   until:
     - "Q:"
-    - "Question:"
+    - "###"
     - "</s>"
     - "<|im_end|>"
   do_sample: false
@@ -13,6 +13,6 @@ filter_list:
   - name: strict-match
     filter:
       - function: regex
-        regex_pattern: '(?:The (?:final )?answer:)\s*(.+?)(?=\s*#|\n[a-zA-Z0-9]|$)'
+        regex_pattern: '((?<=Therefore, the answer: )(.*)(?=.)|(?<=answer: )(.*)(?=.))'
       - function: take_first
-description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to generate the next utterance based on the dialogue context and the time elapsed. Your response after step-by-step reasoning should be followed by 'The final answer: '.\n\n"
+description: "You are given a conversation between two speakers and the time elapsed after the last utterance. Your task is to generate the next utterance based on the dialogue context and the time elapsed. Your final answer should start with 'Therefore, the answer: ' followed by the utterance only.\n\n### Dialogue context ###\nA: I finally got home. What a day!\nB: It's eleven p.m. and you just got back home? It must be very tough day today.\nA: Whooa Imma take a shower. I'm too tired.\nB: Wash out all your fatigue with it.\n\n### Time elapsed ###\n20 minutes\n\n### Next response of speaker A ###\nLet's think step by step. The ongoing event is taking a shower. 20 minutes have passed since the last exchange, which is enough time for A to have taken a shower and returned. Therefore, the answer: I feel much better now! You didn't go to bed?\n\n"

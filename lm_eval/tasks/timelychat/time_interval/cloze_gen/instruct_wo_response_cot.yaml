@@ -6,7 +6,7 @@ doc_to_target: "{{gold}}"
 generation_kwargs:
   until:
     - "Q:"
-    - "Question:"
+    - "###"
     - "</s>"
     - "<|im_end|>"
   do_sample: false
@@ -15,7 +15,6 @@ filter_list:
   - name: strict-match
     filter:
       - function: regex
-        regex_pattern: '((?<=The answer is )([A-Z])|(?<=answer is )([A-Z])|(?<=The answer: )([A-Z])|(?<=The final answe
-r: )([A-Z])|(?<=answer is: )([A-Z]))'
+        regex_pattern: '((?<=Therefore, the answer is )([A-D])|(?<=answer is )([A-D]))'
       - function: take_first
-description: "You are given a conversation between two speakers. Your task is to predict the time interval until the next utterance based on the dialogue context. Your final answer should be a single letter (A, B, C or D) followed by 'The answer is '.\n\n"
+description: "You are given a conversation between two speakers. Your task is to predict the time interval until the next utterance based on the dialogue context. Your final answer should start with 'Therefore, the answer is ' followed by either A, B, C or D.\n\n### Dialogue context ###\nA: I finally got home. What a day!\nB: It's eleven p.m. and you just got back home? It must be very tough day today.\nA: Whooa Imma take a shower. I'm too tired.\nB: Wash out all your fatigue with it.\n\nQuestion: How much time is needed for A to respond?\nA. 1 day\nB. 20 minutes\nC. 30 seconds\nD. 8 hours\nAnswer: Let's think step by step. The ongoing event is taking a shower. A typical shower usually takes several minutes but not an excessively long time. Therefore, the answer is B.\n\n"

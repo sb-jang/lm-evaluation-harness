@@ -23,7 +23,7 @@ def doc_to_text_instruct_cot(doc: Dict[str, Union[str, List[str]]]) -> str:
         f"{context}\n\n"
         "### Time elapsed ###\n"
         f"{doc['time_elapsed']}\n\n"
-        "### Next response ###\n"
+        f"### Next response of speaker {doc['target_speaker']} ###\n"
         "Let's think step by step."
     )
 
