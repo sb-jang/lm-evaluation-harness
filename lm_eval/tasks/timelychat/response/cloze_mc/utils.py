@@ -55,3 +55,70 @@ def doc_to_text_msc(doc: Dict[str, Union[str, List[str]]]) -> str:
     query += f"time: {doc['time_elapsed']}\n{target_speaker}:"
 
     return query
+
+
+def doc_to_text_msc_summ(doc: Dict[str, Union[str, List[str]]]) -> str:
+    """
+    Summary-appended prompt for MSC evaluation.
+    """
+    speaker_mapping = {"A": "p1", "B": "p2"}
+    query = ""
+    for speaker, utt in zip(doc["speaker_list"], doc["context"]):
+        if speaker in speaker_mapping.keys():
+            speaker = speaker_mapping[speaker]
+        query += f"{speaker}: {utt}\n"
+
+    target_speaker = speaker_mapping[doc["target_speaker"]] if doc["target_speaker"] in speaker_mapping.keys() else doc["target_speaker"]
+    query += f"summary: {doc['summary']}\ntime: {doc['time_elapsed']}\n{target_speaker}:"
+
+    return query
+
+
+def doc_to_text_gapchat_both(doc: Dict[str, Union[str, List[str]]]) -> str:
+    """
+    The dialogue format used in GapChat (https://aclanthology.org/2023.findings-emnlp.720).
+    ex)
+    Text:<spk> speaker_1: <utt> Hi, how are you? <spk> speaker_2: <utt> I'm good, thank you. <spk> ...\n
+    Progress: <spk> speaker_1: You just started preparing for a presentation.
+    Schedule: <spk> speaker_1: finished: to-do: You just started preparing for a presentation.
+    label: <spk> speaker_2: <utt>
+    """
+    last_turn = doc["text"].split("<spk>")[-1].strip()
+    target_speaker = "speaker_1" if last_turn.startswith("speaker_2") else "speaker_2"
+    query = f"Text:{doc['text']}\nProgress:{doc['Progress']}\nSchedule:{doc['Schedule']}\nlabel:<spk> {target_speaker}: <utt>"
+
+    return query
+
+
+def doc_to_text_gapchat_progress(doc: Dict[str, Union[str, List[str]]]) -> str:
+    last_turn = doc["text"].split("<spk>")[-1].strip()
+    target_speaker = "speaker_1" if last_turn.startswith("speaker_2") else "speaker_2"
+    query = f"Text:{doc['text']}\nProgress:{doc['Progress']}\nlabel:<spk> {target_speaker}: <utt>"
+    
+    return query
+
+
+def doc_to_text_gapchat_schedule(doc: Dict[str, Union[str, List[str]]]) -> str:
+    last_turn = doc["text"].split("<spk>")[-1].strip()
+    target_speaker = "speaker_1" if last_turn.startswith("speaker_2") else "speaker_2"
+    query = f"Text:{doc['text']}\nSchedule:{doc['Schedule']}\nlabel:<spk> {target_speaker}: <utt>"
+    
+    return query
+
+
+def doc_to_text_gapchat_unaware(doc: Dict[str, Union[str, List[str]]]) -> str:
+    """
+    <spk> speaker_1: <time> 0 minutes later <utt> Hi, how are you? <spk> speaker_2: <time> 0 minutes later <utt> I'm good, thank you. <spk> speaker_1: <time> {time_elapsed} later <utt>
+    """
+    last_turn = doc["text"].split("<spk>")[-1].strip()
+    target_speaker = "speaker_1" if last_turn.startswith("speaker_2") else "speaker_2"
+    turns = doc["text"].split("<spk>")[1:]
+    query = turns[0].strip() + " "
+    for turn in turns[1:]:
+        split = turn.split("<utt>")
+        speaker = split[0].strip()
+        utt = split[1].strip()
+        query += f"<spk> {speaker}: <time> 0 minutes later <utt> {utt} "
+    query += f"<spk> {target_speaker}: <time> {doc['time_elapsed']} later <utt>"
+    
+    return query

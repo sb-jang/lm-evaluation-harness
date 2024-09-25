@@ -1,0 +1,7 @@
+task: timelychat_cloze_mc_msc_summ
+include: ../cloze_multiple_choice_template_yaml
+doc_to_text: !function utils.doc_to_text_msc_summ
+dataset_path: seongbo-research/timelychat-summ
+dataset_name: msc
+fewshot_split: eval
+description: "You are given a dialogue and its summary between two speakers, the last utterance and the time elapsed after it. Your task is to generate the next utterance based on the dialogue context and the time elapsed.\n\n"

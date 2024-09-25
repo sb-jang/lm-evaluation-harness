@@ -4,7 +4,7 @@ process_docs: !function utils.process_docs_instruct_cot
 generation_kwargs:
   until:
     - "Q:"
-    - "Question:"
+    - "###"
     - "</s>"
     - "<|im_end|>"
   do_sample: false

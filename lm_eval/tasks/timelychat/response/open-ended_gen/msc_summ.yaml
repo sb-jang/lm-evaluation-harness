@@ -1,0 +1,15 @@
+include: ../open-ended_generate_until_template_yaml
+task: timelychat_open-ended_gen_msc_summ
+doc_to_text: !function utils.doc_to_text_msc_summ
+generation_kwargs:
+  until:
+    - "\n\n"
+    - "\n"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0
+dataset_path: seongbo-research/timelychat-summ
+dataset_name: msc
+fewshot_split: eval
+description: "You are given a dialogue and its summary between two speakers, the last utterance and the time elapsed after it. Your task is to generate the next utterance based on the dialogue context and the time elapsed.\n\n"

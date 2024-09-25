@@ -130,6 +130,27 @@ def process_docs_msc_without_gold_response(dataset: datasets.Dataset):
     return dataset.map(_helper)
 
 
+def process_docs_msc_summ_without_gold_response(dataset: datasets.Dataset):
+    """
+    Summary-appended prompt for MSC evaluation.
+    """
+    def _helper(doc):
+        doc["choices"] = [doc["time_elapsed"].lower(), *list(map(lambda x: x.lower(), doc["negative_answers"]))]
+
+        speaker_mapping = {"A": "p1", "B": "p2"}
+        query = ""
+        for speaker, utt in zip(doc["speaker_list"], doc["context"]):
+            if speaker in speaker_mapping.keys():
+                speaker = speaker_mapping[speaker]
+            query += f"{speaker}: {utt}\n"
+
+        query += f"summary: {doc['summary']}\ntime:"
+        doc["query"] = query
+        return doc
+
+    return dataset.map(_helper)
+
+
 def process_docs_msc_with_gold_response(dataset: datasets.Dataset):
     def _helper(doc):
         doc["choices"] = [doc["time_elapsed"].lower(), *list(map(lambda x: x.lower(), doc["negative_answers"]))]
@@ -142,6 +163,27 @@ def process_docs_msc_with_gold_response(dataset: datasets.Dataset):
             query += f"{speaker}: {utt}\n"
 
         query += "time:"
+        doc["query"] = query
+
+        target_speaker = speaker_mapping[doc["target_speaker"]] if doc["target_speaker"] in speaker_mapping.keys() else doc["target_speaker"]
+        doc["choices"] = [c + f"\n{target_speaker}: {doc['timely_response']}" for c in doc["choices"]]
+        return doc
+
+    return dataset.map(_helper)
+
+
+def process_docs_msc_summ_with_gold_response(dataset: datasets.Dataset):
+    def _helper(doc):
+        doc["choices"] = [doc["time_elapsed"].lower(), *list(map(lambda x: x.lower(), doc["negative_answers"]))]
+
+        speaker_mapping = {"A": "p1", "B": "p2"}
+        query = ""
+        for speaker, utt in zip(doc["speaker_list"], doc["context"]):
+            if speaker in speaker_mapping.keys():
+                speaker = speaker_mapping[speaker]
+            query += f"{speaker}: {utt}\n"
+
+        query += f"summary: {doc['summary']}\ntime:"
         doc["query"] = query
 
         target_speaker = speaker_mapping[doc["target_speaker"]] if doc["target_speaker"] in speaker_mapping.keys() else doc["target_speaker"]

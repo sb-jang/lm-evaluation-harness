@@ -1,0 +1,7 @@
+task: time_interval_mc_msc_summ_w_response
+include: ../cloze_multiple_choice_template_yaml
+process_docs: !function utils.process_docs_msc_summ_with_gold_response
+target_delimiter: ""
+dataset_path: seongbo-research/interval-prediction-summ
+dataset_name: msc
+description: "You are given a dialogue and its summary between two speakers. Your task is to predict the time interval until the next utterance based on the dialogue.\n\n"
