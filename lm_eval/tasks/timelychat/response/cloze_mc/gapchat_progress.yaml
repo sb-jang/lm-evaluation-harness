@@ -1,0 +1,5 @@
+task: timelychat_cloze_mc_gapchat_progress
+include: ../cloze_multiple_choice_template_yaml
+doc_to_text: !function utils.doc_to_text_gapchat_progress
+dataset_path: seongbo-research/timelychat-gapchat_style
+fewshot_split: null

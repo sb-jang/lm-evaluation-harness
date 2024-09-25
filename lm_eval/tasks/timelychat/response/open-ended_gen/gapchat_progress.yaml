@@ -1,0 +1,13 @@
+include: ../open-ended_generate_until_template_yaml
+task: timelychat_open-ended_gen_gapchat_progress
+doc_to_text: !function utils.doc_to_text_gapchat_progress
+generation_kwargs:
+  until:
+    - "\n\n"
+    - "\n"
+    - "</s>"
+    - "<|im_end|>"
+  do_sample: false
+  temperature: 0.0
+dataset_path: seongbo-research/timelychat-gapchat_style
+fewshot_split: null
